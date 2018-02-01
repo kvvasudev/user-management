@@ -15,9 +15,9 @@ tmp
 local.properties
 .classpath
 .settings
-user-management-services.classpath
-user-management-services.project
-user-management-servicestarget
-user-management-webapp.classpath
-user-management-webapp.project
-user-management-webapptarget
+user-management-services/.classpath
+user-management-services/.project
+user-management-services/target
+user-management-webapp/.classpath
+user-management-webapp/.project
+user-management-webapp/target
