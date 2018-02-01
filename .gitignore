@@ -10,6 +10,7 @@
 
 # Eclipse
 .classpath
+<<<<<<< HEAD
 .project
 .settings/
 .sonar/
@@ -41,3 +42,4 @@ nbproject/private/
 /bin/
 /src/main/resources/config/application-local.properties
 /logs/
+
