@@ -24,11 +24,11 @@ public class Organisation {
     private String address;
 	
 	@LastModifiedDate
-	@Column(name = "last_updated_date", columnDefinition = "DATETIME", nullable = false)
+	@Column(name = "last_updated_date", columnDefinition = "timestamp with time zone", nullable = false)
 	private ZonedDateTime lastUpdatedDate;
 	
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
 	public Long getId() {
 		return id;
 	}

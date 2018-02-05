@@ -1,5 +1,6 @@
 package com.mastek.poc.model;
 
+import java.sql.Date;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Set;
@@ -17,11 +18,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
-
 import org.springframework.data.annotation.LastModifiedDate;
 
 @Entity
-@Table(name="USER")
+@Table(name="user")
 public class User {
 	
     private Long id;
@@ -30,11 +30,10 @@ public class User {
     
     private String email;
     
-	@Column(name="dob", columnDefinition = "DATETIME")
-    private ZonedDateTime dateOfBirth;
+    private Date dob;
 	
 	@LastModifiedDate
-	@Column(name = "last_updated_date", columnDefinition = "DATETIME", nullable = false)
+	@Column(name = "last_updated_date", columnDefinition = "timestamp with time zone", nullable = false)
 	private ZonedDateTime lastUpdatedDate;
 	
     private Organisation organisation;
@@ -42,7 +41,7 @@ public class User {
     private Set<Group> groups;
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
 	public Long getId() {
 		return id;
 	}
@@ -67,12 +66,12 @@ public class User {
 		this.email = email;
 	}
 
-	public ZonedDateTime getDateOfBirth() {
-		return dateOfBirth;
+	public Date getDob() {
+		return dob;
 	}
 
-	public void setDateOfBirth(ZonedDateTime dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
+	public void setDob(Date dob) {
+		this.dob = dob;
 	}
 	
     @ManyToOne
@@ -107,31 +106,31 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", email=" + email + ", dateOfBirth=" + dateOfBirth + "]";
+		return "User [id=" + id + ", name=" + name + ", email=" + email + ", dateOfBirth=" + dob + "]";
 	}
 
-	public User(String name, String email, ZonedDateTime dateOfBirth, Organisation organisation, Set<Group> groups) {
+	public User(String name, String email, Date dob, Organisation organisation, Set<Group> groups) {
 		super();
 		this.name = name;
 		this.email = email;
-		this.dateOfBirth = dateOfBirth;
+		this.dob = dob;
 		this.organisation = organisation;
 		this.groups = groups;
 	}
 	
-	public User(String name, String email, ZonedDateTime dateOfBirth, Set<Group> groups) {
+	public User(String name, String email, Date dob, Set<Group> groups) {
 		super();
 		this.name = name;
 		this.email = email;
-		this.dateOfBirth = dateOfBirth;
+		this.dob = dob;
 		this.groups = groups;
 	}
 	
-	public User(String name, String email, ZonedDateTime dateOfBirth, Organisation organisation) {
+	public User(String name, String email, Date dob, Organisation organisation) {
 		super();
 		this.name = name;
 		this.email = email;
-		this.dateOfBirth = dateOfBirth;
+		this.dob = dob;
 		this.organisation = organisation;
 	}
 
