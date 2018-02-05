@@ -10,7 +10,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="group")
+@Table(name="groupdata")
 public class Group {
 
     private Long id;

@@ -21,7 +21,7 @@ import javax.persistence.Table;
 import org.springframework.data.annotation.LastModifiedDate;
 
 @Entity
-@Table(name="user")
+@Table(name="userdata")
 public class User {
 	
     private Long id;
