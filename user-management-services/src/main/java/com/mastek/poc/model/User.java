@@ -18,6 +18,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Email;
 import org.springframework.data.annotation.LastModifiedDate;
 
 @Entity
@@ -26,10 +30,15 @@ public class User {
 	
     private Long id;
     
+    @NotNull
+    @Size(min=2, max=50, message="Name must be of size 2 to 50 characters")
     private String name;
     
+    @NotNull
+    @Email
     private String email;
     
+    @NotNull
     private Date dob;
 	
 	@LastModifiedDate

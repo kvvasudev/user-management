@@ -2,6 +2,7 @@ package com.mastek.poc.model;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -19,8 +22,12 @@ public class Organisation {
 
 	private Long id;
     
+	@NotNull
+	@Size(min=2, max=50, message="Name must be of size 2 to 50 characters")
     private String name;
 	
+	@NotNull
+	@Size(min=6, max=100, message="Name must be of size 6 to 100 characters")
     private String address;
 	
 	@LastModifiedDate

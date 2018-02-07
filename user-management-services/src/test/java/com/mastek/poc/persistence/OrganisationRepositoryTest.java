@@ -50,8 +50,8 @@ public class OrganisationRepositoryTest {
     public void testOrganisationFind() {
     	organisation = organisationRepository.save(organisation);
     	
-    	organisation = organisationRepository.findOne(organisation.getId());
-    	Assert.assertTrue(organisation.getId() > 0);
+    	Organisation org = organisationRepository.findOne(organisation.getId());
+    	Assert.assertTrue(organisation.getId() == org.getId());
     	organisationRepository.delete(organisation);
     }
 

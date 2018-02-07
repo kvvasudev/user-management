@@ -1,13 +1,7 @@
 package com.mastek.poc.persistence;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashSet;
-import java.util.Set;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -15,7 +9,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.datetime.standard.DateTimeFormatterFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -76,14 +69,67 @@ public class UserRepositoryTest {
     public void testUserSave() {
     	organisation = organisationRepository.save(organisation);
     	Assert.assertTrue(organisation.getId() > 0);
-    	    	
+    	
+    	user.setName("Vasudev Kaveri01");
     	user.setOrganisation(organisation);
     	user.setGroups(new HashSet<Group>(){{add(group);}});
         user = userRepository.save(user);
         Assert.assertTrue(user.getId() > 0);
         
-        //userRepository.delete(user);
-        //organisationRepository.delete(organisation);
+        userRepository.delete(user);
+        organisationRepository.delete(organisation);
+    }
+    
+    @Test
+    public void testRetrieveOrganisationOfUser() {
+    	organisation = organisationRepository.save(organisation);
+    	Assert.assertTrue(organisation.getId() > 0);
+    	user.setOrganisation(organisation);
+    	user.setName("Vasudev Kaveri02");
+    	user.setGroups(new HashSet<Group>(){{add(group);}});
+        user = userRepository.save(user);
+        Assert.assertTrue(user.getId() > 0);
+        
+        Organisation orgFromRepo = userRepository.retrieveOrganisation(user.getId());
+        Assert.assertTrue(orgFromRepo.getId() == organisation.getId());
+        
+        userRepository.delete(user);
+        organisationRepository.delete(organisation);
+    }
+    
+    @Test
+    public void testCheckUniqueUserEmailInOrganisationForSuccess() {
+    	organisation = organisationRepository.save(organisation);
+    	Assert.assertTrue(organisation.getId() > 0);
+    	user.setOrganisation(organisation);
+    	user.setName("Vasudev Kaveri02");
+    	user.setGroups(new HashSet<Group>(){{add(group);}});
+        user = userRepository.save(user);
+        Assert.assertTrue(user.getId() > 0);
+        
+        User existingUser = userRepository.checkUniqueUserEmailInOrganisation(organisation, user.getEmail());
+        Assert.assertNotNull(existingUser);
+        Assert.assertTrue(existingUser.getEmail().equalsIgnoreCase(user.getEmail()) && existingUser.getOrganisation().getId() == user.getOrganisation().getId());
+        
+        userRepository.delete(user);
+        organisationRepository.delete(organisation);
+    }
+    
+    @Test
+    public void testCheckUniqueUserEmailInOrganisationForFailure() {
+    	organisation = organisationRepository.save(organisation);
+    	Assert.assertTrue(organisation.getId() > 0);
+    	user.setOrganisation(organisation);
+    	user.setName("Vasudev Kaveri02");
+    	user.setGroups(new HashSet<Group>(){{add(group);}});
+        user = userRepository.save(user);
+        Assert.assertTrue(user.getId() > 0);
+        
+        User existingUser = userRepository.checkUniqueUserEmailInOrganisation(organisation, "testuser@comp.com");
+        Assert.assertNull(existingUser);
+        
+        userRepository.delete(user);
+        organisationRepository.delete(organisation);
     }
 
 }

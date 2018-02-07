@@ -6,8 +6,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name="groupdata")
@@ -37,7 +41,11 @@ public class Group {
 		this.name = name;
 	}
 
-	@ManyToMany(mappedBy = "groups")
+	@ManyToMany
+	@JoinTable(name = "user_group", 
+	joinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"), 
+	inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+	@JsonBackReference
 	public Set<User> getUsers() {
 		return users;
 	}
