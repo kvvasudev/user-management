@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.mastek.poc.exception.UserManagementException;
+import com.mastek.poc.manager.UserManager;
 import com.mastek.poc.model.Organisation;
 import com.mastek.poc.model.User;
-import com.mastek.poc.persistence.OrganisationRepository;
 import com.mastek.poc.persistence.UserRepository;
 
 @RestController
@@ -32,7 +32,7 @@ public class UserRestController {
 	private UserRepository userRepository;
 	
 	@Autowired
-    private OrganisationRepository organisationRepository;
+    private UserManager userManager;
 
     @GetMapping
     public List<User> getUsers() {
@@ -43,41 +43,26 @@ public class UserRestController {
     public User getUser(@PathVariable Long userId) {
         return userRepository.findOne(userId);
     }
+    
+	@GetMapping("/{userId}/organisation")
+	public Organisation retrieveOrganisationForUser(@PathVariable Long userId) {
+		return userRepository.retrieveOrganisation(userId);
+	}
 
     @PostMapping
     public ResponseEntity<Object> newUser(@Valid @RequestBody User user) {
-    	
-    	if(organisationRepository.findOne(user.getOrganisation().getId()) == null) {
-    		throw new UserManagementException(String.format("OrgId %s not found", user.getOrganisation().getId()));
-    	}
-        
-    	User existingUser = userRepository.checkUniqueUserEmailInOrganisation(user.getOrganisation(), user.getEmail());
-    	if(existingUser!=null) {
-    	    throw new UserManagementException(String.format("Email address %s already registered in Organisation", user.getEmail()));
-        }
-    	User savedUser = userRepository.save(user);
-    	URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{orgId}")
-    			.buildAndExpand(savedUser.getId()).toUri();
-
-    	return ResponseEntity.created(location).build();
+    	return userManager.processUserCreationOrUpdation(user, true, false);
     }
 
     @PutMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> editUser(@Valid @RequestBody User user, @PathVariable Long userId) {
     	User existingUser = userRepository.findOne(userId);
-
     	if (existingUser == null) {
     		return ResponseEntity.notFound().build();
     	}
     	user.setId(userId);
-    	userRepository.save(user);
-
-    	return ResponseEntity.noContent().build();
+    	return userManager.processUserCreationOrUpdation(user, false, true);
     }
     
-	@GetMapping("/{userId}/organisation")
-	public Organisation retrieveOrganisationForUser(@PathVariable Long userId) {
-		return userRepository.retrieveOrganisation(userId);
-	}
 }

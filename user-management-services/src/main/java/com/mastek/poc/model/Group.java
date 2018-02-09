@@ -1,13 +1,12 @@
 package com.mastek.poc.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -21,7 +20,7 @@ public class Group {
     
     private String name;
 	
-	private Set<User> users;
+	private Set<User> users = new HashSet<User>();
 	
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -41,10 +40,7 @@ public class Group {
 		this.name = name;
 	}
 
-	@ManyToMany
-	@JoinTable(name = "user_group", 
-	joinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"), 
-	inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+	@ManyToMany(mappedBy="groups")
 	@JsonBackReference
 	public Set<User> getUsers() {
 		return users;
@@ -52,6 +48,11 @@ public class Group {
 
 	public void setUsers(Set<User> users) {
 		this.users = users;
+	}
+
+	@Override
+	public String toString() {
+		return "Group [id=" + id + ", name=" + name + "]";
 	}
 	
 }

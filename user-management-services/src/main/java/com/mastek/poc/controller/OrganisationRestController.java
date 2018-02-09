@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.mastek.poc.exception.UserManagementException;
 import com.mastek.poc.model.Organisation;
 import com.mastek.poc.persistence.OrganisationRepository;
 
@@ -35,11 +36,15 @@ public class OrganisationRestController {
     
     @GetMapping("/{orgId}")
     public Organisation getOrganisation(@PathVariable Long orgId) {
-    	return organisationRepository.findOne(orgId);
+    	return  organisationRepository.findOne(orgId);
     }
 
     @PostMapping
     public ResponseEntity<Object> newOrganisation(@Valid @RequestBody Organisation organisation) {
+    	Organisation existingOrg = organisationRepository.findByName(organisation.getName());
+    	if(existingOrg!=null) {
+    		throw new UserManagementException(String.format("Organisation Name %s Already Created, chose a different one", organisation.getName()));
+    	}
     	Organisation savedOrg = organisationRepository.save(organisation);
     	URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{orgId}")
     			.buildAndExpand(savedOrg.getId()).toUri();
@@ -55,8 +60,8 @@ public class OrganisationRestController {
     	if(existingOrg == null) {
     		return ResponseEntity.notFound().build();
     	}
-    	organisation.setId(orgId);
-    	organisationRepository.save(organisation);
+    	existingOrg.setAddress(organisation.getAddress());
+    	organisationRepository.save(existingOrg);
     	return ResponseEntity.noContent().build();
     }
     

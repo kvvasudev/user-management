@@ -27,7 +27,7 @@ public class Organisation {
     private String name;
 	
 	@NotNull
-	@Size(min=6, max=100, message="Name must be of size 6 to 100 characters")
+	@Size(min=6, max=100, message="Name must be of size 6 to 150 characters")
     private String address;
 	
 	@LastModifiedDate

@@ -3,6 +3,7 @@ package com.mastek.poc.model;
 import java.sql.Date;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -47,7 +48,7 @@ public class User {
 	
     private Organisation organisation;
     
-    private Set<Group> groups;
+    private Set<Group> groups = new HashSet<Group>();
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -113,9 +114,11 @@ public class User {
         this.lastUpdatedDate = ZonedDateTime.now(ZoneId.of("UTC"));
     }
 
+
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", email=" + email + ", dateOfBirth=" + dob + "]";
+		return "User [id=" + id + ", name=" + name + ", email=" + email + ", dob=" + dob + ", lastUpdatedDate="
+				+ lastUpdatedDate + ", organisation=" + organisation + ", groups=" + groups + "]";
 	}
 
 	public User(String name, String email, Date dob, Organisation organisation, Set<Group> groups) {
@@ -146,5 +149,5 @@ public class User {
 	public User() {
 		super();
 	}
-    
+	
 }

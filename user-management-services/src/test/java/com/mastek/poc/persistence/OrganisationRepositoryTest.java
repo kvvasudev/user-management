@@ -54,5 +54,5 @@ public class OrganisationRepositoryTest {
     	Assert.assertTrue(organisation.getId() == org.getId());
     	organisationRepository.delete(organisation);
     }
-
+    
 }
