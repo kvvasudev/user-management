@@ -11,16 +11,16 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.mastek.poc.TestConfig;
 import com.mastek.poc.model.Group;
 import com.mastek.poc.model.Organisation;
 import com.mastek.poc.model.User;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = TestConfig.class)
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes=TestConfig.class)
 public class UserRepositoryTest {
 	
 	private static User user = new User();
