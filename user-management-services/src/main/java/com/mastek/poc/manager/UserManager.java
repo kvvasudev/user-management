@@ -83,7 +83,7 @@ public class UserManager {
     	
     	logger.info("User To be Saved: "+user);
     	User savedUser = userRepository.save(user);
-    	URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{orgId}")
+    	URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{userId}")
     			.buildAndExpand(savedUser.getId()).toUri();
 
     	return ResponseEntity.created(location).build();
