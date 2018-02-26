@@ -71,6 +71,20 @@ public class UserManagerTest {
 	    verifyNoMoreInteractions(userRepository);
 	}
 	
+	@Test(expected = UserManagementException.class)
+	public void testProcessUserUpdationFailureWithExistingEmail() {
+		User user = populateUser(true, true, true);
+		User anotherUser = populateUser(true, true, true);
+		anotherUser.setId(2l);
+		when(orgRepository.findOne(1l)).thenReturn(user.getOrganisation());
+		when(userRepository.checkUniqueUserEmailInOrganisation(user.getOrganisation(), user.getEmail())).thenReturn(anotherUser);
+		userManager.processUserCreationOrUpdation(user, false, true);
+		verify(orgRepository, times(1)).findOne(1l);
+	    verifyNoMoreInteractions(orgRepository);
+	    verify(userRepository, times(1)).checkUniqueUserEmailInOrganisation(user.getOrganisation(), user.getEmail());
+	    verifyNoMoreInteractions(userRepository);
+	}
+	
 	@Test
 	public void testProcessUserCreationSuccess() {
 		User user = populateUser(false, true, true);

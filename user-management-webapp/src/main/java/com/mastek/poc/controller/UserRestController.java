@@ -30,7 +30,7 @@ public class UserRestController {
 	
 	@Autowired
     private UserManager userManager;
-
+	
     @GetMapping
     public List<User> getUsers() {
         return userRepository.findAll();
@@ -45,7 +45,7 @@ public class UserRestController {
 	public Organisation retrieveOrganisationForUser(@PathVariable Long userId) {
 		return userRepository.retrieveOrganisation(userId);
 	}
-
+	
     @PostMapping
     public ResponseEntity<Object> newUser(@Valid @RequestBody User user) {
     	return userManager.processUserCreationOrUpdation(user, true, false);
