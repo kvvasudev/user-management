@@ -21,8 +21,12 @@ import com.mastek.poc.model.Organisation;
 import com.mastek.poc.model.User;
 import com.mastek.poc.persistence.UserRepository;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/users")
+@Api(value="Rest Operations for managing Users")
 public class UserRestController {
 
 	@Autowired
@@ -32,27 +36,32 @@ public class UserRestController {
     private UserManager userManager;
 	
     @GetMapping
+    @ApiOperation(value = "View a list of available users", response = List.class)
     public List<User> getUsers() {
         return userRepository.findAll();
     }
     
     @GetMapping("/{userId}")
+    @ApiOperation(value = "List an User with particular userId", response = User.class)
     public User getUser(@PathVariable Long userId) {
         return userRepository.findOne(userId);
     }
     
 	@GetMapping("/{userId}/organisation")
+	@ApiOperation(value = "Lists an organisation of a particular User with userId", response = User.class)
 	public Organisation retrieveOrganisationForUser(@PathVariable Long userId) {
 		return userRepository.retrieveOrganisation(userId);
 	}
 	
     @PostMapping
+    @ApiOperation(value = "Add a new User", response = ResponseEntity.class)
     public ResponseEntity<Object> newUser(@Valid @RequestBody User user) {
     	return userManager.processUserCreationOrUpdation(user, true, false);
     }
 
     @PutMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Edit an User with a particular userId", response = ResponseEntity.class)
     public ResponseEntity<Object> editUser(@Valid @RequestBody User user, @PathVariable Long userId) {
     	User existingUser = userRepository.findOne(userId);
     	if (existingUser == null) {

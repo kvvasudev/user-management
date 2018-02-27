@@ -18,27 +18,32 @@ import javax.validation.constraints.Size;
 
 import org.springframework.data.annotation.LastModifiedDate;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
 @Table(name="usercredentials")
 public class UserCredentials {
-	
+
+	@ApiModelProperty(notes="The database generated User Credentials ID")
 	private Long id;
 	
     @NotNull
     @Column(name = "login_name")
     @Size(min=2, max=50, message="Name must be of size 2 to 50 characters")
+	@ApiModelProperty(notes="The loginName of an User", required= true)
     private String loginName;
 	
     @NotNull
     @Column(name = "password")
     @Size(min=2, max=100, message="Name must be of size 2 to 100 characters")
+	@ApiModelProperty(notes="The password of an User", required= true)
     private String password;
     
 	@LastModifiedDate
 	@Column(name = "last_updated_date", columnDefinition = "timestamp with time zone", nullable = false)
 	private ZonedDateTime lastUpdatedDate;
 	
-	//@NotNull
+	@ApiModelProperty(notes="An User who is associated with the logon Credentials", required= true)
 	private User user;
 	
     @OneToOne

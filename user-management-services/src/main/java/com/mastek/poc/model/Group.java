@@ -12,14 +12,19 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
 @Table(name="groupdata")
 public class Group {
 
+	@ApiModelProperty(notes="The database generated Group ID")
     private Long id;
     
+    @ApiModelProperty(notes = "The Name of the Group", required = true)
     private String name;
 	
+    @ApiModelProperty(notes = "The Set of Users a Group can be associated with")
 	private Set<User> users = new HashSet<User>();
 	
     @Id

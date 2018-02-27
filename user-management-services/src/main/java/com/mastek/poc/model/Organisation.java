@@ -16,18 +16,23 @@ import javax.validation.constraints.Size;
 
 import org.springframework.data.annotation.LastModifiedDate;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
 @Table(name="organisation")
 public class Organisation {
 
+	@ApiModelProperty(notes="The database generated Organisation ID")
 	private Long id;
     
 	@NotNull
 	@Size(min=2, max=50, message="Name must be of size 2 to 50 characters")
+    @ApiModelProperty(notes = "The Name of the Organisation", required = true)
     private String name;
 	
 	@NotNull
 	@Size(min=6, max=100, message="Name must be of size 6 to 150 characters")
+    @ApiModelProperty(notes = "The Address of Organisation", required = true)
     private String address;
 	
 	@LastModifiedDate

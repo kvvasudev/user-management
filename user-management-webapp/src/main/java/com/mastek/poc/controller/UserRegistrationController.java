@@ -16,8 +16,12 @@ import com.mastek.poc.model.UserCredentials;
 import com.mastek.poc.persistence.UserCredentialsRepository;
 import com.mastek.poc.persistence.UserRepository;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/user")
+@Api(value="Rest Operations for managing User Registration and / or Authentication")
 public class UserRegistrationController {
 	@Autowired
 	private UserCredentialsRepository userCredRepository;
@@ -27,6 +31,7 @@ public class UserRegistrationController {
 	
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Register a new User", response = ResponseEntity.class)
     public ResponseEntity<Object> registerUser(@Valid @RequestBody UserCredentials userCred) {
     	if(userCredRepository.findUserCredentialsByUser(userCred.getUser()) != null) {
     		throw new UserManagementException(String.format("User is already registered %s", userCred.getUser()));
@@ -43,6 +48,7 @@ public class UserRegistrationController {
     }
     
 	@PostMapping("/authenticate")
+    @ApiOperation(value = "Authenticate a particular user", response = ResponseEntity.class)
 	public ResponseEntity<Object> authenticateUser(@Valid @RequestBody UserCredentials userCred) {
 		User user = null;
 		user = userCredRepository.authenticateUser(userCred.getLoginName(), userCred.getPassword());

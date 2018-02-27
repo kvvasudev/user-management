@@ -20,26 +20,34 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.mastek.poc.exception.UserManagementException;
 import com.mastek.poc.model.Organisation;
+import com.mastek.poc.model.User;
 import com.mastek.poc.persistence.OrganisationRepository;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/organisations")
+@Api(value="Rest Operations for managing Organisations")
 public class OrganisationRestController {
 	
 	@Autowired
     private OrganisationRepository organisationRepository;
 
     @GetMapping
+    @ApiOperation(value = "View a list of available organisations", response = List.class)
     public List<Organisation> getOrganisations() {
         return organisationRepository.findAll();
     }
     
     @GetMapping("/{orgId}")
+    @ApiOperation(value = "List an Organisation with particular orgId", response = Organisation.class)
     public Organisation getOrganisation(@PathVariable Long orgId) {
     	return  organisationRepository.findOne(orgId);
     }
 
     @PostMapping
+    @ApiOperation(value = "Add a new Organisation", response = ResponseEntity.class)
     public ResponseEntity<Object> newOrganisation(@Valid @RequestBody Organisation organisation) {
     	Organisation existingOrg = organisationRepository.findByName(organisation.getName());
     	if(existingOrg!=null) {
@@ -54,6 +62,7 @@ public class OrganisationRestController {
 
     @PutMapping("/{orgId}")
     @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Edit an Organisation with a particular orgId", response = ResponseEntity.class)
     public ResponseEntity<Object> editOrganisation(@Valid @RequestBody Organisation organisation, @PathVariable Long orgId) {
     	Organisation existingOrg = organisationRepository.findOne(orgId);
     	
